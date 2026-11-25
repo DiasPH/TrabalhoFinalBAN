@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: tottenham_pg
+    environment:
+      POSTGRES_USER: tottenham_user
+      POSTGRES_PASSWORD: tottenham_password
+      POSTGRES_DB: tottenham_stats
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: tottenham_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@tottenham.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
